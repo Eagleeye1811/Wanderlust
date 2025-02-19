@@ -36,7 +36,24 @@ const listingSchema = new Schema({
       type: [Number],
       required: true
     }
-  }
+  },
+  category: {
+    type: String,
+    enum: [
+      "Trending",
+      "City",
+      "Cultural",
+      "Historical",
+      "Mountains",
+      "Resorts",
+      "Camping",
+      "Wildlife",
+      "Arctic",
+      "Beach",
+      "Cruise",
+    ],
+    required: true, // Optional, depending on your use case
+  },
 });
 
 //Mongoose middleware

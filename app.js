@@ -5,6 +5,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -41,6 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(cors());
 
 const store = MongoStore.create({ //all the session info will store in mongoDB Atlas rather than local system
   mongoUrl: dbURL,
@@ -90,6 +92,11 @@ app.use((req,res,next) => {
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/",userRouter);
+
+app.get("/listings/mountains", async (req, res) => {
+  console.log("connected");
+});
+
 
 
 app.all("*", (req, res, next) => {

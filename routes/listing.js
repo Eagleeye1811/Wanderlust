@@ -28,8 +28,6 @@ router
 //Index Route
 // router.get("/", wrapAsync(listingController.index));
 
-
-
 //Show Route
 // router.get("/:id", wrapAsync(listingController.showListing));
 

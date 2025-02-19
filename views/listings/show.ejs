@@ -6,7 +6,7 @@
 </script>
 
   <div class="row mt-3">
-    <div class="col-8 offset-3">
+    <div class="col-8 offset-3 mb-2 mt-1">
       <h3><b>
           <%= listing.title %>
         </b></h3>
@@ -15,7 +15,7 @@
       <img src="<%= listing.image.url %>" class="card-img-top show-img mb-1" alt="listing_image">
       <div class="card-body">
         <p class="card-text">Owned by <i>
-            <%= listing.owner.username %>
+            @<%= listing.owner.username %>
           </i></p>
         <p class="card-text">
           <%= listing.description %>
@@ -27,6 +27,9 @@
         </p>
         <p class="card-text">
           <%= listing.country %>
+        </p>
+        <p class="card-text">
+          <%= listing.category %>
         </p>
       </div>
     </div>

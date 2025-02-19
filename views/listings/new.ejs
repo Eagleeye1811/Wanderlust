@@ -36,6 +36,25 @@
                 <input name="listing[location]" placeholder="Mumbai,Maharashtra" type="text" class="form-control" required/>
                 <div class="invalid-feedback">Location should be valid</div>
             </div>
+            <!-- now added -->
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select name="listing[category]" id="category" class="form-control" required>
+                  <option value="" disabled selected>Select a category</option>
+                  <option value="Trending">Trending</option>
+                  <option value="City">City</option>
+                  <option value="Cultural">Cultural</option>
+                  <option value="Historical">Historical</option>
+                  <option value="Mountains">Mountains</option>
+                  <option value="Resorts">Resorts</option>
+                  <option value="Camping">Camping</option>
+                  <option value="Wildlife">Wildlife</option>
+                  <option value="Arctic">Arctic</option>
+                  <option value="Beach">Beach</option>
+                  <option value="Cruise">Cruise</option>
+                </select>
+                <div class="invalid-feedback">Please select a valid category</div>
+              </div>
 
             <button class="btn btn-dark add-btn mb-3">Add</button>
             <br><br/>

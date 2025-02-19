@@ -4,14 +4,34 @@ const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
+
 module.exports.index = async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", { allListings });
-}
+    const { query: searchQuery } = req.query;
+    
+    let allListings;
+    if (searchQuery) {
+        // Search listings based on title or description or category
+        allListings = await Listing.find({
+            $or: [
+                { title: { $regex: searchQuery, $options: "i" } }, // Case-insensitive search
+                { description: { $regex: searchQuery, $options: "i" } }, // Optional: add description or category to search
+                { category: { $regex: searchQuery, $options: "i" } }
+            ]
+        });
+    } else {
+        // No search query, get all listings
+        allListings = await Listing.find({});
+    }
+
+    // Render the listings page with filtered or all listings
+    res.render("listings/index.ejs", { allListings, selectedCategory: req.query.category || null });
+};
+
+
 
 module.exports.renderNewForm = (req, res) => {
     res.render("listings/new.ejs");
-}
+}   
 
 module.exports.showListing = async (req, res) => {
     const listing = await Listing.findById(req.params.id)
@@ -36,6 +56,7 @@ module.exports.createListing = async (req, res) => {
     let url = req.file.path;
     let filename = req.file.filename;
     const newListing = new Listing(req.body.listing);
+    console.log(newListing);
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
 
