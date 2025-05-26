@@ -1,50 +1,109 @@
 <style>
- 
-.search-btn{
-  background-color: #fe424d;
-  color: #fff;
-  display: flex;
-  align-items: center;  
-  padding: 0.5rem 1rem;  
-  border-radius: 25px;
-}
+  /* Navbar Styling */
+  .navbar {
+    background: #fe424d; /* Solid red background */
+  }
 
-.search-btn:hover{
-  background-color: #fe424d;
-  color: #fff;
-}
+  .nav-link {
+    color: #ffffff !important; /* White text for links */
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Subtle glowing effect */
 
-.search-btn i {
-  margin-right: 0.5rem; 
-}
+  }
 
-.search-btn span {
-  display: inline; 
-}
+  .nav-link:hover {
+    color: #fff !important; /* Light hover effect */
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8); /* Subtle glowing effect */
+    z-index: 3;
 
-.search-inp{
-  border-radius: 25px;
-  padding: 0.5rem 3rem 0.5rem 3rem;
-}
+  }
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff; /* White text for the brand */
+    transition: color 0.3s ease, text-shadow 0.3s ease; /* Smooth transition for hover effects */
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Subtle glowing effect */
 
+  }
 
+  .navbar-brand i {
+    margin-right: 0.5rem;
+    color: #fff; /* White color for the logo */
+  }
+
+  .navbar-brand:hover {
+    color: #fff; /* Light hover effect for the text */
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8); /* Subtle glowing effect */
+    z-index: 3;
+  }
+
+  .navbar-nav .nav-link {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0 0.5rem;
+    transition: color 0.3s ease;
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #ffe6e6; /* Light hover effect */
+  }
+
+  .search-btn {
+    background-color: #fff;
+    color: #fe424d;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    border: 1px solid #fe424d;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .search-btn:hover {
+    background-color: #fe424d;
+    color: #fff;
+  }
+
+  .search-btn i {
+    margin-right: 0.5rem;
+  }
+
+  .search-inp {
+    border-radius: 25px;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid #ddd;
+  }
+
+  .search-inp:focus {
+    outline: none;
+    border-color: #fe424d;
+    box-shadow: 0 0 5px rgba(254, 66, 77, 0.5);
+  }
+
+  .navbar-toggler {
+    border: none;
+  }
+
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  }
 </style>
 
-
-
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<nav class="navbar navbar-expand-md sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+    <!-- Brand -->
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-regular fa-compass"></i> Wanderlust
+    </a>
 
+    <!-- Toggler -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
       <span class="navbar-toggler-icon"></span>
     </button>
 
+    <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link" href="/listings">Explore</a>
-      </div>
-
+      <!-- Search Bar -->
       <div class="navbar-nav ms-auto">
         <form class="d-flex" role="search">
           <input class="form-control me-2 search-inp" type="search" name="query" placeholder="Search destinations" required>
@@ -55,15 +114,16 @@
         </form>
       </div>
 
+      <!-- User Links -->
       <div class="navbar-nav ms-auto">
         <a class="nav-link" href="/listings/new">Add new listing</a>
-        <% if(!currUser) {%>
+        <% if(!currUser) { %>
           <a class="nav-link" href="/signup"><b>Sign up</b></a>
           <a class="nav-link" href="/login"><b>Log in</b></a>
-          <% } %>
-            <% if(currUser) {%>
-              <a class="nav-link" href="/logout"><b>Log out</b></a>
-              <% } %>
+        <% } %>
+        <% if(currUser) { %>
+          <a class="nav-link" href="/logout"><b>Log out</b></a>
+        <% } %>
       </div>
     </div>
   </div>

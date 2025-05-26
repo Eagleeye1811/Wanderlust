@@ -7,20 +7,20 @@ const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 module.exports.index = async (req, res) => {
     const { query: searchQuery } = req.query;
-    
+
     let allListings;
     if (searchQuery) {
-        // Search listings based on title or description or category
+        // Search listings based on title, description, or category
         allListings = await Listing.find({
             $or: [
-                { title: { $regex: searchQuery, $options: "i" } }, // Case-insensitive search
-                { description: { $regex: searchQuery, $options: "i" } }, // Optional: add description or category to search
+                { title: { $regex: searchQuery, $options: "i" } },
+                { description: { $regex: searchQuery, $options: "i" } },
                 { category: { $regex: searchQuery, $options: "i" } }
             ]
-        });
+        }).populate("owner"); // Populate the owner field
     } else {
         // No search query, get all listings
-        allListings = await Listing.find({});
+        allListings = await Listing.find({}).populate("owner"); // Populate the owner field
     }
 
     // Render the listings page with filtered or all listings
@@ -46,26 +46,28 @@ module.exports.showListing = async (req, res) => {
 
 
 module.exports.createListing = async (req, res) => {
-    let response = await geocodingClient
-        .forwardGeocode({
-            query: req.body.listing.location,
-            limit: 1,
-        })
-        .send();
+    try {
+        let response = await geocodingClient
+            .forwardGeocode({
+                query: req.body.listing.location,
+                limit: 1,
+            })
+            .send();
 
-    let url = req.file.path;
-    let filename = req.file.filename;
-    const newListing = new Listing(req.body.listing);
-    console.log(newListing);
-    newListing.owner = req.user._id;
-    newListing.image = { url, filename };
+        let url = req.file.path;
+        let filename = req.file.filename;
+        const newListing = new Listing(req.body.listing);
+        newListing.owner = req.user._id;
+        newListing.image = { url, filename };
+        newListing.geometry = response.body.features[0].geometry;
 
-    newListing.geometry = response.body.features[0].geometry;
-
-    let savedListing = await newListing.save();
-    console.log(savedListing);
-    req.flash("success", "New Listing Created");
-    res.redirect("/listings");
+        await newListing.save();
+        req.flash("success", "New Listing Created");
+        res.redirect("/listings");
+    } catch (e) {
+        req.flash("error", "Failed to create listing");
+        res.redirect("/listings/new");
+    }
 };
 
 
@@ -101,6 +103,6 @@ module.exports.destroyListing = async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     console.log(deletedListing);
-    req.flash("success", "Listing Deleted");
+    req.flash("error", "Listing Deleted"); // Use "error" instead of "success" for red color
     res.redirect("/listings");
-}
+};
