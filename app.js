@@ -1,7 +1,6 @@
 if (process.env.NODE_ENV != "production");
 require("dotenv").config();
 
-
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -97,18 +96,14 @@ app.get("/listings/mountains", async (req, res) => {
   console.log("connected");
 });
 
-
-
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page not found!"));
 })
-
 
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong!" } = err;
   res.status(statusCode).render("listings/error.ejs", { message, statusCode });
 });
-
 
 app.listen(8080, () => {
   console.log("server is listening to port 8080");

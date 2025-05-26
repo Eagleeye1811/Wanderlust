@@ -1,143 +1,282 @@
 <% layout("/layouts/boilerplate") %>
 
-  <style>
-    #filters {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-    }
+<style>
+  /* Filters Section */
+  #filters {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping */
+    justify-content: center;
+    gap: 1rem; /* Reduce gap between filters */
+    margin: 2.5rem 0; /* Increased margin for top and bottom to prevent hiding */
+    overflow: hidden; /* Ensure no overflow when zooming */
+    padding: 1rem ;
+  }
 
-    .filter {
-      text-align: center;
-      margin-right: 2rem;
-      margin-top: 2rem;
-      opacity: 0.7;
-    }
+  .filter {
+    text-align: center;
+    padding: 0.7rem 1rem; /* Increased padding for better spacing */
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Slightly smaller border radius */
+    background-color: #f9f9f9;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    font-size: 0.85rem; /* Reduce font size */
+    min-width: 80px; /* Ensure consistent width for smaller filters */
+    
+  }
 
-    .filter:hover {
-      opacity: 1;
-      cursor: pointer;
-    }
+  .filter:hover {
+    transform: scale(1.1); /* Zoom effect */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow for hover */
+    cursor: pointer;
+    z-index: 1; /* Ensure the hovered filter is above others */
+  }
 
-    .filter {
-      font-size: 0.8rem;
-    }
+  .filter i {
+    font-size: 1.5rem; /* Reduce icon size */
+    color: #fe424d;
+    transition: color 0.3s;
+  }
 
-    .tax-info {
-      display: none;
-    }
+  .filter p {
+    margin-top: 0.3rem; /* Reduce spacing between icon and text */
+    font-weight: bold;
+    color: #333;
+  }
 
-    .tax-toggle {
-      border: 1px solid black;
-      border-radius: 1rem;
-      height: 3.25rem;
-      padding: 1rem;
-      margin-left: 2rem;
-      display: flex;
-      align-items: center;
-    }
-  </style>
+  /* Active Filter Styling */
+  .filter.active {
+    background-color: #D3D3D3; /* Medium grey background color */
+    color: #fff; /* White text color */
+    border-color: #bdc3c6; /* Medium grey border color */
+  }
 
-  <div id="filters">
-    <div class="filter" name="Trending">
-      <div><i class="fa-solid fa-fire"></i></div>
-      <p>Trending</p>
-    </div>
-    <div class="filter" name="City">
-      <div><i class="fa-solid fa-bed"></i></div>
-      <p>City</p>
-    </div>
-    <div class="filter" name="Cultural">
-      <div><i class="fa-solid fa-gopuram"></i></div>
-      <p>Cultural</p>
-    </div>
-    <div class="filter" name="Historical">
-      <div><i class="fa-brands fa-fort-awesome"></i></div>
-      <p>Historical</p>
-    </div>
-    <div class="filter" name="Mountains">
-      <div><i class="fa-solid fa-mountain"></i></div>
-      <p>Mountains</p>
-    </div>
-        <div class="filter" name="Resorts">
-      <div><i class="fa-solid fa-person-swimming"></i></div>
-      <p>Resorts</p>
-    </div>
-    <div class="filter" name="Camping">
-      <div><i class="fa-solid fa-campground"></i></div>
-      <p>Camping</p>
-    </div>
-    <div class="filter" name="Wildlife">
-      <div><i class="fa-solid fa-hippo"></i></div>
-      <p>Wildlife</p>
-    </div>
-    <div class="filter" name="Arcitc">
-      <div><i class="fa-solid fa-snowflake"></i></div>
-      <p>Arcitc</p>
-    </div>
-    <div class="filter" name="Beach">
-      <div><i class="fa-solid fa-umbrella-beach"></i></div>
-      <p>Beach</p>
-    </div>
-    <div class="filter" name="Cruise">
-      <div><i class="fa-solid fa-ship"></i></div>
-      <p>Cruise</p>
-    </div>
-    <div class="tax-toggle">
-      <div class="form-check-reverse form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-        <label class="form-check-label" for="flexSwitchCheckChecked">Display total after taxes</label>
-      </div>
-    </div>
+
+
+/* Cards Section */
+.listing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.card-img-top {
+  height: 150px; /* Smaller image height */
+  object-fit: cover;
+  border: 2px solid #ddd; /* Add a border around the image */
+  border-top-left-radius: 15px; /* Curve only the top-left corner */
+  border-top-right-radius: 15px; /* Curve only the top-right corner */
+  border-bottom-left-radius: 0 !important; /* Ensure no curve on the bottom-left corner */
+  border-bottom-right-radius: 0 !important; /* Ensure no curve on the bottom-right corner */
+}
+
+.listing-card {
+  border-radius: 15px; /* Ensure the card itself has rounded corners */
+  overflow: hidden; /* Prevent content overflow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: #fff;
+  position: relative; /* For positioning the rating */
+}
+
+.listing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+.card-body {
+  margin-left: 1rem;
+  padding: 1rem;
+  padding-left: 2rem;
+}
+
+.card-body p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #000;
+}
+
+.card-body p b {
+  font-size: 1.1rem;
+  color: #000;
+}
+
+.card-body .location {
+  font-size: 0.85rem;
+  color: #000;
+}
+
+  /* Rating Section */
+  .rating {
+    position: absolute;
+    bottom: 1rem; /* Position at the bottom */
+    right: 1rem; /* Position at the right */
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.9rem;
+    color: #f39c12;
+  }
+
+  .rating i {
+    color: #f39c12;
+  }
+
+  /* Tax Info Toggle */
+  .tax-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  .tax-toggle .form-check-label {
+    margin-left: 0.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  @media (max-width: 768px) {
+    .listing-grid {
+      grid-template-columns: repeat(2, 1fr); /* 2 cards per row on smaller screens */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .listing-grid {
+      grid-template-columns: 1fr; /* 1 card per row on very small screens */
+    }
+  }
+</style>
+
+<div id="filters">
+  <!-- All Listings Filter -->
+  <div class="filter" name="All">
+    <i class="fa-solid fa-list"></i>
+    <p>All Listings</p>
   </div>
+  <!-- Other Filters -->
+  <div class="filter" name="Trending">
+    <i class="fa-solid fa-fire"></i>
+    <p>Trending</p>
+  </div>
+  <div class="filter" name="City">
+    <i class="fa-solid fa-bed"></i>
+    <p>City</p>
+  </div>
+  <div class="filter" name="Cultural">
+    <i class="fa-solid fa-gopuram"></i>
+    <p>Cultural</p>
+  </div>
+  <div class="filter" name="Historical">
+    <i class="fa-brands fa-fort-awesome"></i>
+    <p>Historical</p>
+  </div>
+  <div class="filter" name="Mountains">
+    <i class="fa-solid fa-mountain"></i>
+    <p>Mountains</p>
+  </div>
+  <div class="filter" name="Resorts">
+    <i class="fa-solid fa-person-swimming"></i>
+    <p>Resorts</p>
+  </div>
+  <div class="filter" name="Camping">
+    <i class="fa-solid fa-campground"></i>
+    <p>Camping</p>
+  </div>
+  <div class="filter" name="Wildlife">
+    <i class="fa-solid fa-hippo"></i>
+    <p>Wildlife</p>
+  </div>
+  <div class="filter" name="Arctic">
+    <i class="fa-solid fa-snowflake"></i>
+    <p>Arctic</p>
+  </div>
+  <div class="filter" name="Beach">
+    <i class="fa-solid fa-umbrella-beach"></i>
+    <p>Beach</p>
+  </div>
+  <div class="filter" name="Cruise">
+    <i class="fa-solid fa-ship"></i>
+    <p>Cruise</p>
+  </div>
+</div>
 
-  <!-- <%= success %> -->
+<div class="tax-toggle">
+  <div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+    <label class="form-check-label" for="flexSwitchCheckChecked">Display total after taxes</label>
+  </div>
+</div>
 
-
-  <div class="row row-cols-lg-3 row-cls-md-2 row-cls-sm-1 mt-3">
-    <% for(let listing of allListings) { %>
-      <% if (!selectedCategory || listing.category === selectedCategory) { %>
-        <a href="/listings/<%= listing._id %>" class="listing-link">
-          <div class="card col listing-card">
-            <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
-            <div class="card-img-overlay">abcd</div>
-            <div class="card-body">
-              <p class="card-text">
-                <b>
-                  <%= listing.title %>
-                </b> <br>
-                &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
-                  &nbsp; &nbsp; <i class="tax-info">+18% GST</i>
-              </p>
-            </div>
+<div class="listing-grid">
+  <% for(let listing of allListings) { %>
+    <% if (!selectedCategory || listing.category === selectedCategory) { %>
+      <a href="/listings/<%= listing._id %>" class="listing-link">
+        <div class="card listing-card">
+          <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image">
+          <div class="card-body">
+            <p><b><%= listing.title %></b></p>
+            <p>Owner: <%= listing.owner ? listing.owner.username : "Unknown" %></p>
+            <p class="location">Location: <%= listing.location %></p>
           </div>
-        </a>
-      <% } %>
+          <div class="rating">
+            <% let avgRating = listing.rating || 2.5; %> <!-- Default rating is 2.5 -->
+            <i class="fa-solid fa-star"></i>
+            <span><%= avgRating.toFixed(1) %></span>
+          </div>
+        </div>
+      </a>
     <% } %>
-  </div>
-  
+  <% } %>
+</div>
 
-
-  <script>
-    let taxSwitch = document.getElementById("flexSwitchCheckChecked");
-    taxSwitch.addEventListener("click", () => {
-      let taxInfo = document.getElementsByClassName("tax-info");
-      for (info of taxInfo) {
-        if (info.style.display != "inline") {
-          info.style.display = "inline";
-        } else {
-          info.style.display = "none";
-        }
-      }
-    })
-
-    let filters = document.querySelectorAll(".filter"); // Select all elements with the class 'filter'
-
-    for (let filter of filters) {
-      filter.addEventListener("click", () => {
-        let name = filter.getAttribute("name")
-        window.location.href = `/listings?category=${name}`;
-      })
-
+<script>
+  // Tax Info Toggle
+  let taxSwitch = document.getElementById("flexSwitchCheckChecked");
+  taxSwitch.addEventListener("click", () => {
+    let taxInfo = document.getElementsByClassName("tax-info");
+    for (info of taxInfo) {
+      info.style.display = info.style.display === "inline" ? "none" : "inline";
     }
-  </script>
+  });
+
+  // Filter Click Event
+  let filters = document.querySelectorAll(".filter");
+  let currentCategory = new URLSearchParams(window.location.search).get("category");
+
+  // Highlight the active filter based on the current category
+  if (currentCategory) {
+    filters.forEach(filter => {
+      if (filter.getAttribute("name") === currentCategory) {
+        filter.classList.add("active");
+      }
+    });
+  } else {
+    // If no category is selected, make "All Listings" active
+    filters.forEach(filter => {
+      if (filter.getAttribute("name") === "All") {
+        filter.classList.add("active");
+      }
+    });
+  }
+
+  filters.forEach(filter => {
+    filter.addEventListener("click", () => {
+      // Remove 'active' class from all filters
+      filters.forEach(f => f.classList.remove("active"));
+
+      // Add 'active' class to the clicked filter
+      filter.classList.add("active");
+
+      // Redirect to the selected category
+      let name = filter.getAttribute("name");
+      if (name === "All") {
+        window.location.href = `/listings`; // Redirect to all listings
+      } else {
+        window.location.href = `/listings?category=${name}`;
+      }
+    });
+  });
+</script>
+

@@ -1,36 +1,107 @@
 <% layout("/layouts/boilerplate") %>
+
 <script>
     const mapToken = "<%= process.env.MAP_TOKEN %>"
     const listing = <%- JSON.stringify(listing) %>
     
 </script>
+<style>
+  .show-img-container {
+    width: 100%; /* Full width */
+    border-radius: 15px; /* Add rounded corners */
+    overflow: hidden; /* Ensure the image doesn't overflow the container */
+    margin: 1rem 0; /* Add spacing above and below */
+    display: flex; /* Center the image */
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4; /* Optional: Add a background color for empty space */
+    position: relative; /* For dynamic height adjustment */
+  }
 
+  .show-img {
+    width: 100%; /* Full width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Ensure the entire image is visible */
+  }
+
+  #map {
+    width: 100%; /* Full width */
+    height: 400px; /* Same height as the image */
+    border-radius: 15px; /* Add rounded corners */
+    margin: 1rem 0; /* Add spacing above and below */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better appearance */
+  }
+
+  .listing-card{
+    margin-left: 1rem;
+  }
+
+  .listing-card .about-section {
+    font-size: 1.2rem; /* Larger font size for the about section */
+    font-weight: bold; /* Bold text for emphasis */
+    margin-bottom: 0.5rem; /* Space below the about section */
+    color: #333 ; /* Darker text for better readability */
+  }
+
+  .listing-card .card-body p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem; /* Consistent font size for all details */
+    color: #333; /* Darker text for important details */
+  }
+
+  .listing-card .card-body p b {
+    color: #000; /* Bold text for labels */
+  }
+
+  .listing-card .card-body .price {
+    font-size: 1.1rem; /* Same font size as other details */
+    color: #333; /* Consistent text color */
+  }
+
+  .listing-card .card-body .location {
+    font-size: 1.1rem; /* Same font size as other details */
+    color: #333; /* Consistent text color */
+  }
+</style>
   <div class="row mt-3">
-    <div class="col-8 offset-3 mb-2 mt-1">
+    <div class="mb-2 mt-1">
       <h3><b>
           <%= listing.title %>
         </b></h3>
     </div>
-    <div class="card col-6 offset-3 show-card listing-card">
-      <img src="<%= listing.image.url %>" class="card-img-top show-img mb-1" alt="listing_image">
+  </div>
+
+  <!-- Image Section -->
+  <div class="row">
+    <div class="show-img-container" id="image-container">
+      <img src="<%= listing.image.url %>" class="show-img" id="image" alt="listing_image">
+    </div>
+  </div>
+
+  <script>
+    // Adjust the container height dynamically based on the image's aspect ratio
+    const image = document.getElementById('image');
+    const imageContainer = document.getElementById('image-container');
+
+    image.onload = () => {
+      const aspectRatio = image.naturalHeight / image.naturalWidth;
+      imageContainer.style.height = `${imageContainer.offsetWidth * aspectRatio}px`;
+    };
+  </script>
+
+  <div class="card show-card listing-card">
       <div class="card-body">
-        <p class="card-text">Owned by <i>
-            @<%= listing.owner.username %>
-          </i></p>
-        <p class="card-text">
-          <%= listing.description %>
-        </p>
-        <p class="card-text">&#8377; <%= listing.price.toLocaleString("en-IN") %>
-        </p>
-        <p class="card-text">
-          <%= listing.location %>
-        </p>
-        <p class="card-text">
-          <%= listing.country %>
-        </p>
-        <p class="card-text">
-          <%= listing.category %>
-        </p>
+        <p class="card-text">Owned by <i>@<%= listing.owner.username %></i></p>
+        <div class="about-section">
+          About <%= listing.title %>
+        </div>
+        <div class="description-output">
+          <%- listing.description.replace(/\n/g, '<br>') %>
+        </div>
+        <br/>
+        <p class="card-text"><b>Price to visit:</b> &#8377; <%= listing.price.toLocaleString("en-IN") %></p>
+        <p class="card-text"><b>Location:</b> <%= listing.location %>, <%= listing.country %></p>
+        <p class="card-text"><b>Category:</b> <%= listing.category %></p>
       </div>
     </div>
 
@@ -38,7 +109,7 @@
 
     <% if(currUser && currUser._id.equals(listing.owner._id)){ %>
       <div class="btns">
-        <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 edit-btn">Edit</a>
+        <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-1  edit-btn">Edit</a>
 
         <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
           <button class="btn btn-dark offset-5">Delete</button>
@@ -51,7 +122,7 @@
 
 
 
-        <div class="col-8 offset-3 mb-3">
+        <div class="mb-3">
           <hr />
           <% if(currUser){ %>
             <h4>Leave a Review</h4>
@@ -111,11 +182,13 @@
                 <% } %>
             </div>
             <% } %>
-        </div>
-        <div class="col-8 offset-3 mb-3">
+          </div>
+        <div class="mb-3">
           <h3>Where you'll be</h3>
           <div id="map"></div>
         </div>
   </div>
 
 <script src="/js/map.js"></script>
+
+
