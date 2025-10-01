@@ -27,8 +27,6 @@ module.exports.index = async (req, res) => {
     res.render("listings/index.ejs", { allListings, selectedCategory: req.query.category || null });
 };
 
-
-
 module.exports.renderNewForm = (req, res) => {
     res.render("listings/new.ejs");
 }   

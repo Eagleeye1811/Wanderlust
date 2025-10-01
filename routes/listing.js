@@ -9,7 +9,7 @@ const listingController = require("../controllers/listings.js");
 const multer = require('multer');
 const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
-
+ 
 router
     .route("/")
     .get(wrapAsync(listingController.index))
@@ -17,7 +17,7 @@ router
 
 
 //New Route
-router.get("/new", isLoggedIn, listingController.renderNewForm);//keep it before /:id or new will treat as id
+router.get("/new", isLoggedIn, listingController.renderNewForm);//keep it before /:id or new will treat as id         
 
 router
     .route("/:id")

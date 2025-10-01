@@ -1,5 +1,6 @@
-if (process.env.NODE_ENV != "production");
+if (process.env.NODE_ENV != "production"){
 require("dotenv").config();
+}
 
 const express = require("express");
 const app = express();
@@ -19,8 +20,6 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-
-// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const dbURL = process.env.ATLASDB_URL;
 
 main()
@@ -43,7 +42,7 @@ app.engine('ejs', ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(cors());
 
-const store = MongoStore.create({ //all the session info will store in mongoDB Atlas rather than local system
+const store = MongoStore.create({ 
   mongoUrl: dbURL,
   crypto:{
     secret: process.env.SECRET,
@@ -67,13 +66,8 @@ const sessionOptions = {
   },
 };
 
-// app.get("/", (req, res) => {
-//   res.send("Hi, I am root");
-// });
-
 app.use(session(sessionOptions));
 app.use(flash());
-
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -86,7 +80,6 @@ app.use((req,res,next) => {
   res.locals.currUser = req.user;
   next();
 })
-
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
